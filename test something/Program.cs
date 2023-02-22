@@ -64,9 +64,9 @@ namespace test_something
                     --r;
                 if (l <= r)
                 {
-                        int temp = array[l];
-                        array[l] = array[r];
-                        array[r] = temp;
+                    int temp = array[l];
+                    array[l] = array[r];
+                    array[r] = temp;
                     ++l;
                     --r;
                 }
@@ -102,7 +102,7 @@ namespace test_something
                 { '9',"wxyz" },
             };
 
-        static void swap(ref int a, ref int b) 
+        static void swap(ref int a, ref int b)
         {
             var note = a;
             a = b;
@@ -116,7 +116,7 @@ namespace test_something
             {
                 for (int j = column; j == column; j++)
                 {
-                    if (board[i,j] == symbol) res++;
+                    if (board[i, j] == symbol) res++;
                 }
             }
             if (res > 1) return false;
@@ -130,7 +130,7 @@ namespace test_something
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (board[i,j] == symbol) res++;
+                    if (board[i, j] == symbol) res++;
                 }
             }
             if (res > 1) return false;
@@ -145,8 +145,8 @@ namespace test_something
             {
                 for (int j = n; j < n + 3; j++)
                 {
-                    if (board[i,j] == symbol) res++;
-                    Console.Write(board[i,j] + " ");
+                    if (board[i, j] == symbol) res++;
+                    Console.Write(board[i, j] + " ");
                 }
                 Console.WriteLine();
             }
@@ -155,64 +155,45 @@ namespace test_something
         }
 
 
-
         static void Main(string[] args)
         {
-            /*string[] strs = { "nozzle", "punjabi", "waterlogged", "imprison", "crux", "numismatists", "sultans", "rambles", "deprecating", "aware", "outfield", "marlborough", "guardrooms", "roast", "wattage", "shortcuts", "confidential" };
-            //Dictionary<int, string> dict = new Dictionary<int, string>();
-            HashSet<string> set = new HashSet<string>();
-            List<IList<string>> result = new List<IList<string>>();
-            for (int i = 0; i < strs.Length; i++)
-            {
-                var note = String.Concat(strs[i].OrderBy(x => x));
-                if (!set.Contains(note))
-                {
-                    set.Add(note);
-                }
-            }
-
-            foreach(var item in set) { 
-                List<string> res = new List<string>();
-                var temp = "";
-                set.TryGetValue(item, out temp);
-                Console.WriteLine("temp = " + temp);
-                for (int j = 0; j < strs.Length; j++)
-                {
-                    var note = String.Concat(strs[j].OrderBy(x => x));
-                    if (note == temp)
-                    {
-                        res.Add(strs[j]);
-                    }
-                }
-                result.Add(res);
-            }
-
-            foreach(var res in result)
-            {
-                Console.WriteLine("New list");
-                foreach (var item in res)
-                {
-                    Console.WriteLine(item);
-                }
-                
-            }*/
-
             //string s = "(()";    //2
             //string s = ")()())"; //4
+            string s = "(()()"; //4
             //string s = "()((())"; //4
-            //string s = "()(()";  //2
-            string s = "((()))()"; //8
+            //string s = "()(()";  //2 
+            //string s = "((()))()"; //8
             //string s = "()((())()()";//8
 
-            //Stack<char> chars = new Stack<char>();
+            //Console.WriteLine(s.);
 
+            int res = 0;
 
-
-
-
+            var reply = fun(s, res, 0);
+            res = reply.Item1;
+            s = reply.Item2;
+            Console.WriteLine(s);
+            Console.WriteLine("maxRes = " + res);
             Console.ReadLine();
         }
 
 
+
+        static (int, string) fun(string s, int res, int maxRes)
+        {
+            for (int i = 0; i < s.Length - 1; i++)
+            {
+                if (s[i] == '(' && s[i + 1] == ')')
+                {
+                    s = s.Remove(i, 2);
+                    res += 2;
+
+                    maxRes = fun(s, res, maxRes).Item1;
+                }
+                maxRes = res > maxRes ? res : maxRes;
+            }
+            if (s.Length == 1 && (s[0] == '(' || s[0] == ')')) maxRes -= 2;
+            return (maxRes, s);
+        }
     }
 }
