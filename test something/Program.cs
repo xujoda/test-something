@@ -157,23 +157,49 @@ namespace test_something
 
         static void Main(string[] args)
         {
-            //string s = "(()";    //2
-            //string s = ")()())"; //4
-            string s = "(()()"; //4
-            //string s = "()((())"; //4
-            //string s = "()(()";  //2 
-            //string s = "((()))()"; //8
-            //string s = "()((())()()";//8
+            //string s = "(()";    //2 +
+            //string s = ")()())"; //4 +
+            //string s = "(()()"; //4 +
+            //string s = "()((())"; //4 -
+            string s = "()(()";  //2 -
+            //string s = "((()))()"; //8 +
+            //string s = "()((())()()";//8 -
 
             //Console.WriteLine(s.);
 
             int res = 0;
+            int maxRes = 0;
+            bool check = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '(')
+                {
+                    for (int j = i+1; j < s.Length; j++)
+                    {
+                        if (s[j] == ')')
+                        {
+                            s = s.Remove(j, 1);
+                            res+=2;
+                            check = true;
+                            break;
+                        }
+                    }
+                    if (check == true)
+                    {
+                        s = s.Remove(i, 1);
+                        i--;
+                        check = false;
+                    }
+                    else
+                    {
+                        maxRes = maxRes < res ? res : maxRes;
+                        res = 0;
+                    }
+                }
+            }
 
-            var reply = fun(s, res, 0);
-            res = reply.Item1;
-            s = reply.Item2;
             Console.WriteLine(s);
-            Console.WriteLine("maxRes = " + res);
+            Console.WriteLine("maxRes = " + maxRes);
             Console.ReadLine();
         }
 
